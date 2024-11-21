@@ -1,0 +1,16 @@
+id,group,acc,average_res_time
+f228,vi,87,370
+ner64,vi,88,350
+ja,vi,99.54,460.73
+jingni,vi,98,466
+lwf,vi,97,365
+mar,vi,97,582
+flex,vi,98,452
+def,er,96,502
+fad,er,96,483
+kl,er,93,367
+le,er,91,364
+m,er,100,406.48
+new,er,93,430
+sig,er,92,519
+xd,er,97,386
