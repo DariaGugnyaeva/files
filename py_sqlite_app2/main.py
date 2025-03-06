@@ -1,9 +1,10 @@
+from sqlalchemy import or_
 from db.models import Task
+from db import Session
 
 
 def main():
-    db_path = "./tasks.db"
-    task_table = Task(db_path)
+    session=Session()
     try:
         while user_input := input():
             args = user_input.split()
@@ -11,31 +12,37 @@ def main():
                 case "create" | "cr":
                     name = args[1]
                     desc = " ".join(args[2:])
-                    task_table.objects.create(name, desc)
+                    new_task = Task(name=name, description=desc)
+                    session.add(new_task)
+                    session.commit()
 
                 case "all" | "a":
-                    tasks = task_table.objects.all()
+                    tasks = session.query(Task).all()
                     print(f"Found {len(tasks)} task(s)")
                     for task in tasks:
                         print(
-                            f"name: {task[0]}, description: '{task[1]}', completed: {bool(task[2])}"
+                            f"name: {task.name}, description: '{task.description}', completed: {task.completed}"
                         )
                 case "find" | "search" | "f" | "s":
                     pattern = " ".join(args[1:])
-                    tasks = task_table.objects.search(pattern)
+                    tasks = session.query(Task).filter(or_(Task.name.contains(pattern), Task.description.contains(pattern))).all()
                     print(f"Found {len(tasks)} task(s)")
                     for task in tasks:
                         print(
-                            f"id: {task[0]}, name: {task[1]}, description: '{task[2]}', completed: {bool(task[3])}"
+                            f"id: {task.id}, name: {task.name}, description: '{task.description}', completed: {task.completed}"
                         )
 
                 case "complete" | "co" | "c":
                     id = int(args[1])
-                    task_table.objects.complete(id)
+                    task = session.query(Task).filter_by(id=id).one()
+                    task.completed = True
+                    session.commit()
 
                 case "delete" | "d":
                     id = int(args[1])
-                    task_table.objects.delete(id)
+                    task = Task.get(id)
+                    session.delete(task)
+                    session.commit()
 
                 case "quit" | "q" | "exit":
                     break
