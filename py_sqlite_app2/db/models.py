@@ -4,30 +4,30 @@ from db import engine
 
 Base = declarative_base()
 
-class Books(Base):
-    __tablename__ = "Books"
+class User(Base):
+    __tablename__ = "User"
     id = Column(Integer, primary_key=True)
-    name = Column(String(40), nullable=False)
-    author = Column(String(40), nullable=False)
-    year = Column(Integer, nullable=False, unique=False, default=2025)
-    edition = Column(Integer, nullable=False)
-    num_bookcase = Column(Integer, nullable=False)
-    num_shell = Column(Integer, nullable=False)
+    username = Column(String(40), nullable=False)
+    email = Column(String(40), nullable=False)
 
-class Visitors(Base):
+class Profile(Base):
     # имя, фамилия, отчество, номер читательского билета, адрес
-    __tablename__ = "Visitors"
+    __tablename__ = "Profile"
     id = Column(Integer, primary_key=True)
-    name = Column(String(30), nullable=False)
-    surname = Column(String(30), nullable=False)
-    patr_name = Column(String(30), nullable=False, default="-")
-    library_card = Column(Integer, unique=True)
-    address = Column(String(50), nullable=False)
+    bio = Column(String(30), nullable=False)
+    phone = Column(String(15), nullable=False)
+    user_id = Column(Integer, nullable=False, unique=True, ForeignKey("User.id"))
 
-class Readers(Base):
-    __tablename__ = "Readers"
+class Project(Base):
+    __tablename__ = "Project"
     id = Column(Integer, primary_key=True, nullable=False)
-    id_vis = Column(Integer, ForeignKey("Visitors.id"), nullable=False)
-    id_book = Column(Integer, ForeignKey("Books.id"), nullable=False)
+    title = Column(String(40), nullable=False)
+    description = Column(String(250), nullable=False)
+
+class Task(Base):
+    id = Column(Integer, primary_key=True, nullable=False)
+    title = Column(String(40), nullable=False)
+    status = Column(Boolean, default=False)
+    project_id = Column(Integer, nullable=False, unique=True, ForeignKey("Project.id"))
 
 Base.metadata.create_all(engine)
