@@ -9,14 +9,14 @@ def main():
         while user_input := input():
             args = user_input.split()
             match args[0]:
-                case "create-user" | "cr-u":
+                case "create-user" | "cr-u" | "добавить пользователя":
                     username = args[1]
                     email = args[2]
                     new_user = User(username=username, email=email)
                     session.add(new_user)
                     session.commit()
 
-                case "create-profile" | "cr-prof":
+                case "create-profile" | "cr-prof" | "создать профиль":
                     bio = args[3:]
                     phone = args[1]
                     user_id = args[2]
@@ -24,14 +24,14 @@ def main():
                     session.add(new_prof)
                     session.commit()
 
-                case "create-project" | "cr-proj":
+                case "create-project" | "cr-proj" | "добавить проект":
                     title = args[1]  # через нижнее подчёркивание слова
                     description = args[2:]
                     new_proj = Project(username=username, email=email)
                     session.add(new_proj)
                     session.commit()
                 
-                case "create-task" | "cr-t":
+                case "create-task" | "cr-t" | "добавить задачу":
                     title = args[1]
                     status = args[2]
                     project_id = args[3]
@@ -39,7 +39,7 @@ def main():
                     session.add(new_task)
                     session.commit()
 
-                case "all-user" | "a-u":
+                case "all-user" | "a-u" | "вывести пользователей":
                     tasks = session.query(User).all()
                     print(f"Found {len(tasks)} user(s)")
                     for task in tasks:
@@ -47,7 +47,7 @@ def main():
                             f"username: {task.username}, email: {task.email}"
                         )
 
-                case "all-profile" | "a-prof":
+                case "all-profile" | "a-prof" | "вывести профили":
                     tasks = session.query(Profile).all()
                     print(f"Found {len(tasks)} profile(s)")
                     for task in tasks:
@@ -56,7 +56,7 @@ def main():
                             f"bio: {task.bio}, email: {task.phone}, user_id: {task.user_id}"
                         )
 
-                case "all-project" | "a-proj":
+                case "all-project" | "a-proj" | "вывести проекты":
                     tasks = session.query(Project).all()
                     print(f"Found {len(tasks)} project(s)")
                     for task in tasks:
@@ -65,7 +65,7 @@ def main():
                             f"title: {task.title}, description: {task.description}"
                         )
                 
-                case "all-task" | "a-t":
+                case "all-task" | "a-t" | "вывести задачи":
                     tasks = session.query(Task).all()
                     print(f"Found {len(tasks)} task(s)")
                     for task in tasks:
@@ -92,7 +92,7 @@ def main():
                         prof.bio = pattern
                     session.commit()
         
-                case "update-proj" | "проект выполнен" | "проект изменился" | "проект не выполнен":
+                case "update-proj" | "проект выполнен" | "проект изменился" | "проект не выполнен" | "обновление проекта":
                     pattern = ' '.join(args[1:])
                     proj = session.query(Project).filter_by(id=id).one()
                     if ' ' in pattern:
