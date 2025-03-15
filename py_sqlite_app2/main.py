@@ -1,6 +1,6 @@
 from sqlalchemy import or_
 from sqlalchemy import update
-from db.models import User, Profile, Project, Task
+from db.models import User, Profile, Project, Task, association_table
 from db import Session
 
 
@@ -13,7 +13,7 @@ def main():
                 case "create-user-proj" | "cr-u-pr" | "добавить-пользователя-на-проект":
                     new_relation = association_table(user_id=args[0], proj_id=args[1])
                     session.add(new_relation)
-                    session.commit()  # как с этим жить, я так и не поняла
+                    session.commit()
 
                 case "create-user" | "cr-u" | "добавить-пользователя":
                     new_user = User(id=args[1], username=args[2], email=args[3])
